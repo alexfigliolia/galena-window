@@ -1,15 +1,13 @@
 import { State } from "@figliolia/galena";
-import type { IPriorityLevel, IScreen } from "./types";
+import type { IScreen } from "./types";
 
 export class WindowManager extends State<IScreen> {
   public initialized = false;
-  public priority: IPriorityLevel;
-  constructor(priority: IPriorityLevel = "BATCHED") {
-    super("Screen", {
+  constructor() {
+    super({
       width: window?.innerWidth ?? 0,
       height: window?.innerHeight ?? 0,
     });
-    this.priority = priority;
   }
 
   public initialize() {
@@ -27,21 +25,9 @@ export class WindowManager extends State<IScreen> {
   }
 
   private onResize = () => {
-    this[this.updateMethod](state => {
-      state.width = window?.innerWidth ?? 0;
-      state.height = window?.innerHeight ?? 0;
+    this.set({
+      width: window?.innerWidth ?? 0,
+      height: window?.innerHeight ?? 0,
     });
   };
-
-  private get updateMethod() {
-    switch (this.priority) {
-      default:
-      case "BATCHED":
-        return "update";
-      case "IMMEDIATE":
-        return "priorityUpdate";
-      case "MICROTASK":
-        return "backgroundUpdate";
-    }
-  }
 }

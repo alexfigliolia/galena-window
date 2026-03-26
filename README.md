@@ -60,10 +60,7 @@ export const App = memo(function App() {
   useSetup(WindowSize);
 
   // Get the current window size
-  const [width, height] = useWindowSize(({ width, height }) => [
-    width, 
-    height
-  ]);
+  const [{width, height}] = useWindowSize();
 
   return (
     <section style={{ width, height }}>
